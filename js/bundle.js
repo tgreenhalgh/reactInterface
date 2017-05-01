@@ -50,14 +50,55 @@
 	class MainInterface extends React.Component {
 	  constructor(props) {
 	    super(props);
-	    this.state = {};
+	    // if anything changes with 'state' React will
+	    // 'react' to the changes and re-render that part
+	    this.state = {
+	      title: "Appointments",
+	      show: true
+	    };
 	  }
 
 	  render() {
+	    // this is what we do when a state change happens
+	    var showTitle;
+	    if (this.state.show) {
+	      showTitle = "New";
+	    }
+
+	    var displayList = {
+	      display: this.state.show ? 'block' : 'none',
+	      color: 'red'
+	    };
+
 	    return React.createElement(
-	      'h1',
-	      null,
-	      'Pet Appointments'
+	      'div',
+	      { className: 'interface' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        showTitle,
+	        ' ',
+	        this.state.title
+	      ),
+	      React.createElement(
+	        'ul',
+	        { style: displayList },
+	        React.createElement(
+	          'li',
+	          null,
+	          'kitty 3:30 PM'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'puppy 4:00 PM'
+	        ),
+	        React.createElement(
+	          'li',
+	          null,
+	          'fishy 4:30 PM'
+	        )
+	      )
 	    );
 	  }
 	}
