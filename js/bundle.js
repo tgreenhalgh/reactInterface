@@ -53,33 +53,38 @@
 	    // if anything changes with 'state' React will
 	    // 'react' to the changes and re-render that part
 	    this.state = {
-	      data: [{
-	        petName: "Buffy",
-	        ownerName: "Hassum Harrod",
-	        aptDate: "2016-06-20 15:30",
-	        aptNotes: "This Chihuahua has not eaten for three days and is lethargic"
-	      }, {
-	        petName: "Spot",
-	        ownerName: "Constance Smith",
-	        aptDate: "2016-06-24 08:30",
-	        aptNotes: "This German Shepherd is having some back pain"
-	      }, {
-	        petName: "Goldie",
-	        ownerName: "Barot Bellingham",
-	        aptDate: "2016-06-22 15:50",
-	        aptNotes: "This Goldfish has some weird spots in the belly"
-	      }, {
-	        petName: "Mitten",
-	        ownerName: "Hillary Goldwyn",
-	        aptDate: "2016-06-21 9:15",
-	        aptNotes: "Cat has excessive hairballs"
-	      }]
+	      myAppointments: [],
+	      url: "http://localhost:3000/jsx/data.json"
 	    };
+	  }
+
+	  loadDataFromServer() {
+	    $.ajax({
+	      url: this.state.url,
+	      dataType: 'json',
+	      success: data => {
+	        this.setState({ myAppointments: data });
+	      },
+	      error: (xhr, status, err) => {
+	        console.error(this.state.url, status, err.toString());
+	      }
+	    });
+	  }
+
+	  // componentDidMount : invoked after the component exists and before rendering
+	  // good place for loading data, ajax, etc (be careful of 'this')
+	  componentDidMount() {
+	    this.loadDataFromServer();
+	  }
+
+	  // componentWillUnmount : used to cancel outstanding requests, etc
+	  componentWillUnmount() {
+	    this.serverRequest.abort();
 	  }
 
 	  render() {
 	    // this is what we do when a state change happens
-	    var filteredApts = this.state.data;
+	    var filteredApts = this.state.myAppointments;
 	    filteredApts = filteredApts.map((item, index) => {
 	      // React needs a unique index for each item
 	      // NOTE the key parameter on the li
@@ -95,12 +100,12 @@
 	            React.createElement(
 	              'span',
 	              { className: 'pet-name' },
-	              this.state.data[index].petname
+	              this.state.myAppointments[index].petname
 	            ),
 	            React.createElement(
 	              'span',
 	              { className: 'apt-date pull-right' },
-	              this.state.data[index].aptDate
+	              this.state.myAppointments[index].aptDate
 	            )
 	          ),
 	          React.createElement(
@@ -111,12 +116,12 @@
 	              { className: 'label-item' },
 	              'Owner: '
 	            ),
-	            this.state.data[index].ownerName
+	            this.state.myAppointments[index].ownerName
 	          ),
 	          React.createElement(
 	            'div',
 	            { className: 'apt-notes' },
-	            this.state.data[index].aptNotes
+	            this.state.myAppointments[index].aptNotes
 	          )
 	        )
 	      );
