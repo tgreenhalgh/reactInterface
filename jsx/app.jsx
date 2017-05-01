@@ -33,24 +33,31 @@ class MainInterface extends React.Component {
 
   render() {
     // this is what we do when a state change happens
-
-    return (
-      <div className="interface" >
-        <ul className="item-list media-list">
-          <li className="pet-item media">
+    var filteredApts = this.state.data;
+    filteredApts = filteredApts.map( (item, index) => {
+      // React needs a unique index for each item
+      // NOTE the key parameter on the li
+      return (
+        <li className="pet-item media" key={index}>
             <div className="pet-info media-body">
               <div className="pet-head">
-                <span className="pet-name">{this.state.data[0].petname}</span>
-                <span className="apt-date pull-right">{this.state.data[0].aptDate}</span>
+                <span className="pet-name">{this.state.data[index].petname}</span>
+                <span className="apt-date pull-right">{this.state.data[index].aptDate}</span>
               </div>
               <div className="owner-name">
                 <span className="label-item">Owner: </span>
-                {this.state.data[0].ownerName}
+                {this.state.data[index].ownerName}
               </div>
-              <div className="apt-notes">{this.state.data[0].aptNotes}</div>
+              <div className="apt-notes">{this.state.data[index].aptNotes}</div>
             </div>
             </li>
-        </ul>
+        );
+    }); // if using function(item, index), need to bind 'this' here
+         // }.bind(this));
+
+    return (
+      <div className="interface" >
+        <ul className="item-list media-list"> {filteredApts} </ul>
       </div>
     );
   }
