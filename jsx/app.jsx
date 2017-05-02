@@ -1,5 +1,6 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
+const _ = require('lodash');
 var AptList = require('./AptList.jsx');
 
 class MainInterface extends React.Component {
@@ -8,7 +9,7 @@ class MainInterface extends React.Component {
     // if anything changes with 'state' React will
     // 'react' to the changes and re-render that part
     this.state = {
-      myAppointments: [],
+      myAppointments: [ ],
       url: "http://localhost:3000/jsx/data.json"
     };
   }
@@ -37,6 +38,15 @@ class MainInterface extends React.Component {
       this.serverRequest.abort();
     }
 
+    deleteMessage(item) {
+      console.log('in deleteMessage ' + item.petName);
+      console.log('state: ' + this.state); // undefined?!?
+      var allApts = this.state.myAppointments;
+      console.log('allApts ' + allApts);
+      var newApts = _.without(allApts, item);
+      this.setState( { myAppointments: newApts });
+    }
+
   render() {
     // this is what we do when a state change happens
     var filteredApts = this.state.myAppointments;
@@ -44,7 +54,9 @@ class MainInterface extends React.Component {
       // sending props
       return (
         <AptList key = { index }
-          singleItem = { item } />
+          singleItem = { item }
+          whichItem = { item }
+          onDelete = { this.deleteMessage } />
         );
     });
 
