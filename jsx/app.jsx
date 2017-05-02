@@ -12,6 +12,7 @@ class MainInterface extends React.Component {
       myAppointments: [ ],
       url: "http://localhost:3000/jsx/data.json"
     };
+    this.deleteMessage = this.deleteMessage.bind(this);
   }
 
   loadDataFromServer() {
@@ -39,10 +40,7 @@ class MainInterface extends React.Component {
     }
 
     deleteMessage(item) {
-      console.log('in deleteMessage ' + item.petName);
-      console.log('state: ' + this.state); // undefined?!?
       var allApts = this.state.myAppointments;
-      console.log('allApts ' + allApts);
       var newApts = _.without(allApts, item);
       this.setState( { myAppointments: newApts });
     }
