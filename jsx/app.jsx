@@ -40,22 +40,9 @@ class MainInterface extends React.Component {
     // this is what we do when a state change happens
     var filteredApts = this.state.myAppointments;
     filteredApts = filteredApts.map( (item, index) => {
-      // React needs a unique index for each item
-      // NOTE the key parameter on the li
       return (
-        <li className="pet-item media" key={index}>
-            <div className="pet-info media-body">
-              <div className="pet-head">
-                <span className="pet-name">{this.state.myAppointments[index].petname}</span>
-                <span className="apt-date pull-right">{this.state.myAppointments[index].aptDate}</span>
-              </div>
-              <div className="owner-name">
-                <span className="label-item">Owner: </span>
-                {this.state.myAppointments[index].ownerName}
-              </div>
-              <div className="apt-notes">{this.state.myAppointments[index].aptNotes}</div>
-            </div>
-            </li>
+        <AptList key = { index }
+          singleItem = { item } />
         );
     }); // if using function(item, index), need to bind 'this' here
          // }.bind(this));
@@ -66,6 +53,27 @@ class MainInterface extends React.Component {
       </div>
     );
   }
+}
+
+class AptList extends React.Component {
+  // using props ... sent singleItem from filteredApts.map
+  render() {
+    return (
+      <li className="pet-item media">
+          <div className="pet-info media-body">
+            <div className="pet-head">
+              <span className="pet-name">{this.props.singleItem.petname}</span>
+              <span className="apt-date pull-right">{this.props.singleItem.aptDate}</span>
+            </div>
+            <div className="owner-name">
+              <span className="label-item">Owner: </span>
+              {this.props.singleItem.ownerName}
+            </div>
+            <div className="apt-notes">{this.props.singleItem.aptNotes}</div>
+          </div>
+        </li>
+      );
+  };
 }
 
 ReactDOM.render( < MainInterface / > ,

@@ -86,45 +86,8 @@
 	    // this is what we do when a state change happens
 	    var filteredApts = this.state.myAppointments;
 	    filteredApts = filteredApts.map((item, index) => {
-	      // React needs a unique index for each item
-	      // NOTE the key parameter on the li
-	      return React.createElement(
-	        'li',
-	        { className: 'pet-item media', key: index },
-	        React.createElement(
-	          'div',
-	          { className: 'pet-info media-body' },
-	          React.createElement(
-	            'div',
-	            { className: 'pet-head' },
-	            React.createElement(
-	              'span',
-	              { className: 'pet-name' },
-	              this.state.myAppointments[index].petname
-	            ),
-	            React.createElement(
-	              'span',
-	              { className: 'apt-date pull-right' },
-	              this.state.myAppointments[index].aptDate
-	            )
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'owner-name' },
-	            React.createElement(
-	              'span',
-	              { className: 'label-item' },
-	              'Owner: '
-	            ),
-	            this.state.myAppointments[index].ownerName
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'apt-notes' },
-	            this.state.myAppointments[index].aptNotes
-	          )
-	        )
-	      );
+	      return React.createElement(AptList, { key: index,
+	        singleItem: item });
 	    }); // if using function(item, index), need to bind 'this' here
 	    // }.bind(this));
 
@@ -137,6 +100,49 @@
 	        ' ',
 	        filteredApts,
 	        ' '
+	      )
+	    );
+	  }
+	}
+
+	class AptList extends React.Component {
+	  // using props ... sent singleItem from filteredApts.map
+	  render() {
+	    return React.createElement(
+	      'li',
+	      { className: 'pet-item media' },
+	      React.createElement(
+	        'div',
+	        { className: 'pet-info media-body' },
+	        React.createElement(
+	          'div',
+	          { className: 'pet-head' },
+	          React.createElement(
+	            'span',
+	            { className: 'pet-name' },
+	            this.props.singleItem.petname
+	          ),
+	          React.createElement(
+	            'span',
+	            { className: 'apt-date pull-right' },
+	            this.props.singleItem.aptDate
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'owner-name' },
+	          React.createElement(
+	            'span',
+	            { className: 'label-item' },
+	            'Owner: '
+	          ),
+	          this.props.singleItem.ownerName
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'apt-notes' },
+	          this.props.singleItem.aptNotes
+	        )
 	      )
 	    );
 	  }
