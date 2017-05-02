@@ -46,6 +46,7 @@
 
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(36);
+	var AptList = __webpack_require__(182);
 
 	class MainInterface extends React.Component {
 	  constructor(props) {
@@ -86,10 +87,10 @@
 	    // this is what we do when a state change happens
 	    var filteredApts = this.state.myAppointments;
 	    filteredApts = filteredApts.map((item, index) => {
+	      // sending props
 	      return React.createElement(AptList, { key: index,
 	        singleItem: item });
-	    }); // if using function(item, index), need to bind 'this' here
-	    // }.bind(this));
+	    });
 
 	    return React.createElement(
 	      'div',
@@ -100,49 +101,6 @@
 	        ' ',
 	        filteredApts,
 	        ' '
-	      )
-	    );
-	  }
-	}
-
-	class AptList extends React.Component {
-	  // using props ... sent singleItem from filteredApts.map
-	  render() {
-	    return React.createElement(
-	      'li',
-	      { className: 'pet-item media' },
-	      React.createElement(
-	        'div',
-	        { className: 'pet-info media-body' },
-	        React.createElement(
-	          'div',
-	          { className: 'pet-head' },
-	          React.createElement(
-	            'span',
-	            { className: 'pet-name' },
-	            this.props.singleItem.petname
-	          ),
-	          React.createElement(
-	            'span',
-	            { className: 'apt-date pull-right' },
-	            this.props.singleItem.aptDate
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'owner-name' },
-	          React.createElement(
-	            'span',
-	            { className: 'label-item' },
-	            'Owner: '
-	          ),
-	          this.props.singleItem.ownerName
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'apt-notes' },
-	          this.props.singleItem.aptNotes
-	        )
 	      )
 	    );
 	  }
@@ -21879,6 +21837,57 @@
 
 	module.exports = ReactDOMInvalidARIAHook;
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(3)))
+
+/***/ }),
+/* 182 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+
+	class AptList extends React.Component {
+	  // using props ... sent singleItem from filteredApts.map
+	  render() {
+	    return React.createElement(
+	      "li",
+	      { className: "pet-item media" },
+	      React.createElement(
+	        "div",
+	        { className: "pet-info media-body" },
+	        React.createElement(
+	          "div",
+	          { className: "pet-head" },
+	          React.createElement(
+	            "span",
+	            { className: "pet-name" },
+	            this.props.singleItem.petname
+	          ),
+	          React.createElement(
+	            "span",
+	            { className: "apt-date pull-right" },
+	            this.props.singleItem.aptDate
+	          )
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "owner-name" },
+	          React.createElement(
+	            "span",
+	            { className: "label-item" },
+	            "Owner: "
+	          ),
+	          this.props.singleItem.ownerName
+	        ),
+	        React.createElement(
+	          "div",
+	          { className: "apt-notes" },
+	          this.props.singleItem.aptNotes
+	        )
+	      )
+	    );
+	  }
+	}
+
+	module.exports = AptList;
 
 /***/ })
 /******/ ]);
