@@ -6,6 +6,7 @@ class SearchAppointments extends React.Component {
 
     this.handleSort = this.handleSort.bind(this);
     this.handleOrder = this.handleOrder.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleSort(e) {
@@ -16,12 +17,16 @@ class SearchAppointments extends React.Component {
     this.props.onReOrder(this.props.orderBy, e.target.id);
   }
 
+  handleSearch(e) {
+    this.props.onSearch(e.target.value);
+  }
+
   render() {
     return (
       <div className="row search-appointments">
         <div className="col-sm-offset-3 col-sm-6">
           <div className="input-group">
-            <input id="SearchApts" placeholder="Search" type="text" className="form-control" aria-label="Search Appointments"/>
+            <input id="SearchApts" onChange={ this.handleSearch } placeholder="Search" type="text" className="form-control" aria-label="Search Appointments"/>
             <div className="input-group-btn">
               <button type="button" className="btn btn-primary dropdown-toggle"
                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Sort by: <span className="caret"></span></button>

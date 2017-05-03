@@ -16,6 +16,7 @@ class MainInterface extends React.Component {
       aptBodyVisible: false,
       orderBy: 'petName',
       orderDir: 'asc',
+      queryText: '',
       url: "http://localhost:3000/jsx/data.json"
     };
 
@@ -23,6 +24,7 @@ class MainInterface extends React.Component {
     this.toggleAddForm = this.toggleAddForm.bind(this);
     this.addItem = this.addItem.bind(this);
     this.reOrder = this.reOrder.bind(this);
+    this.searchApts = this.searchApts.bind(this);
   }
 
   loadDataFromServer() {
@@ -74,11 +76,30 @@ class MainInterface extends React.Component {
     });
   }
 
+  searchApts(q) {
+    this.setState({
+      queryText: q
+    });
+  }
+
   render() {
     // this is what we do when a state change happens
-    var filteredApts = this.state.myAppointments;
+    var filteredApts = [];
     var orderBy = this.state.orderBy;
     var orderDir = this.state.orderDir;
+    var queryText = this.state.queryText;
+    var myAppointments = this.state.myAppointments;
+
+    myAppointments.forEach( (item) => {
+      if (
+        (item.petName.toLowerCase().indexOf(queryText) != -1) ||
+        (item.ownerName.toLowerCase().indexOf(queryText) != -1) ||
+        (item.aptDate.toLowerCase().indexOf(queryText) != -1) ||
+        (item.aptNotes.toLowerCase().indexOf(queryText) != -1)
+        ) {
+              filteredApts.push(item);
+          }
+    });
 
     filteredApts = _.orderBy(filteredApts, (item) => {
       return item[orderBy].toLowerCase();
@@ -107,6 +128,7 @@ class MainInterface extends React.Component {
           orderBy = { this.state.orderBy }
           orderDir = { this.state.orderDir }
           onReOrder = { this.reOrder }
+          onSearch = { this.searchApts}
         />
         <ul className="item-list media-list"> { filteredApts } </ul>
       </div>

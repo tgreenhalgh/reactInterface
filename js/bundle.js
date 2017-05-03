@@ -62,6 +62,7 @@
 	      aptBodyVisible: false,
 	      orderBy: 'petName',
 	      orderDir: 'asc',
+	      queryText: '',
 	      url: "http://localhost:3000/jsx/data.json"
 	    };
 
@@ -69,6 +70,7 @@
 	    this.toggleAddForm = this.toggleAddForm.bind(this);
 	    this.addItem = this.addItem.bind(this);
 	    this.reOrder = this.reOrder.bind(this);
+	    this.searchApts = this.searchApts.bind(this);
 	  }
 
 	  loadDataFromServer() {
@@ -120,11 +122,25 @@
 	    });
 	  }
 
+	  searchApts(q) {
+	    this.setState({
+	      queryText: q
+	    });
+	  }
+
 	  render() {
 	    // this is what we do when a state change happens
-	    var filteredApts = this.state.myAppointments;
+	    var filteredApts = [];
 	    var orderBy = this.state.orderBy;
 	    var orderDir = this.state.orderDir;
+	    var queryText = this.state.queryText;
+	    var myAppointments = this.state.myAppointments;
+
+	    myAppointments.forEach(item => {
+	      if (item.petName.toLowerCase().indexOf(queryText) != -1 || item.ownerName.toLowerCase().indexOf(queryText) != -1 || item.aptDate.toLowerCase().indexOf(queryText) != -1 || item.aptNotes.toLowerCase().indexOf(queryText) != -1) {
+	        filteredApts.push(item);
+	      }
+	    });
 
 	    filteredApts = _.orderBy(filteredApts, item => {
 	      return item[orderBy].toLowerCase();
@@ -151,7 +167,8 @@
 	      React.createElement(SearchAppointments, {
 	        orderBy: this.state.orderBy,
 	        orderDir: this.state.orderDir,
-	        onReOrder: this.reOrder
+	        onReOrder: this.reOrder,
+	        onSearch: this.searchApts
 	      }),
 	      React.createElement(
 	        'ul',
@@ -39230,6 +39247,7 @@
 
 	    this.handleSort = this.handleSort.bind(this);
 	    this.handleOrder = this.handleOrder.bind(this);
+	    this.handleSearch = this.handleSearch.bind(this);
 	  }
 
 	  handleSort(e) {
@@ -39238,6 +39256,10 @@
 
 	  handleOrder(e) {
 	    this.props.onReOrder(this.props.orderBy, e.target.id);
+	  }
+
+	  handleSearch(e) {
+	    this.props.onSearch(e.target.value);
 	  }
 
 	  render() {
@@ -39250,7 +39272,7 @@
 	        React.createElement(
 	          "div",
 	          { className: "input-group" },
-	          React.createElement("input", { id: "SearchApts", placeholder: "Search", type: "text", className: "form-control", "aria-label": "Search Appointments" }),
+	          React.createElement("input", { id: "SearchApts", onChange: this.handleSearch, placeholder: "Search", type: "text", className: "form-control", "aria-label": "Search Appointments" }),
 	          React.createElement(
 	            "div",
 	            { className: "input-group-btn" },
