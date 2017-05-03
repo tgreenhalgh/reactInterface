@@ -1,7 +1,9 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
 const _ = require('lodash');
-var AptList = require('./AptList.jsx');
+
+const AptList = require('./AptList.jsx');
+const AddAppointment = require('./AddAppointment.jsx');
 
 class MainInterface extends React.Component {
   constructor(props) {
@@ -42,6 +44,7 @@ class MainInterface extends React.Component {
     deleteMessage(item) {
       var allApts = this.state.myAppointments;
       var newApts = _.without(allApts, item);
+      // when state is changed, React automatically re-renders
       this.setState( { myAppointments: newApts });
     }
 
@@ -51,7 +54,8 @@ class MainInterface extends React.Component {
     filteredApts = filteredApts.map( (item, index) => {
       // sending props
       return (
-        <AptList key = { index }
+        <AptList
+          key = { index }
           singleItem = { item }
           whichItem = { item }
           onDelete = { this.deleteMessage } />
@@ -60,6 +64,7 @@ class MainInterface extends React.Component {
 
     return (
       <div className="interface" >
+        <AddAppointment/>
         <ul className="item-list media-list"> { filteredApts } </ul>
       </div>
     );

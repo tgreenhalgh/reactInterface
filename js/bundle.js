@@ -47,7 +47,9 @@
 	const React = __webpack_require__(1);
 	const ReactDOM = __webpack_require__(36);
 	const _ = __webpack_require__(182);
-	var AptList = __webpack_require__(184);
+
+	const AptList = __webpack_require__(184);
+	const AddAppointment = __webpack_require__(185);
 
 	class MainInterface extends React.Component {
 	  constructor(props) {
@@ -88,6 +90,7 @@
 	  deleteMessage(item) {
 	    var allApts = this.state.myAppointments;
 	    var newApts = _.without(allApts, item);
+	    // when state is changed, React automatically re-renders
 	    this.setState({ myAppointments: newApts });
 	  }
 
@@ -96,7 +99,8 @@
 	    var filteredApts = this.state.myAppointments;
 	    filteredApts = filteredApts.map((item, index) => {
 	      // sending props
-	      return React.createElement(AptList, { key: index,
+	      return React.createElement(AptList, {
+	        key: index,
 	        singleItem: item,
 	        whichItem: item,
 	        onDelete: this.deleteMessage });
@@ -105,6 +109,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'interface' },
+	      React.createElement(AddAppointment, null),
 	      React.createElement(
 	        'ul',
 	        { className: 'item-list media-list' },
@@ -38964,6 +38969,7 @@
 	class AptList extends React.Component {
 	  constructor(props) {
 	    super(props);
+	    // React auto creates a blank state in each component
 	    // this.state = { };
 
 	    this.handleDelete = this.handleDelete.bind(this);
@@ -39027,6 +39033,125 @@
 	}
 
 	module.exports = AptList;
+
+/***/ }),
+/* 185 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const React = __webpack_require__(1);
+
+	class AddAppointment extends React.Component {
+	  constructor(props) {
+	    super(props);
+	  }
+
+	  render() {
+	    return React.createElement(
+	      "div",
+	      { className: "panel panel-primary" },
+	      React.createElement(
+	        "div",
+	        { className: "panel-heading apt-addheading" },
+	        React.createElement("span", { className: "glyphicon glyphicon-plus" }),
+	        " Add Appointment"
+	      ),
+	      React.createElement(
+	        "div",
+	        { className: "panel-body" },
+	        React.createElement(
+	          "form",
+	          { className: "add-appointment form-horizontal" },
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "col-sm-2 control-label", htmlFor: "petName" },
+	              "Pet Name"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-sm-10" },
+	              React.createElement("input", { type: "text", className: "form-control",
+	                id: "petName", ref: "inputPetName", placeholder: "Pet's Name" })
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "col-sm-2 control-label", htmlFor: "petOwner" },
+	              "Pet Owner"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-sm-10" },
+	              React.createElement("input", { type: "text", className: "form-control",
+	                id: "petOwner", ref: "inputOwnerName", placeholder: "Owner's Name" })
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "col-sm-2 control-label", htmlFor: "aptDate" },
+	              "Date"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-sm-4" },
+	              React.createElement("input", { type: "date", className: "form-control",
+	                id: "aptDate", ref: "inputAptDate" })
+	            ),
+	            React.createElement(
+	              "label",
+	              { className: "col-sm-2 control-label", htmlFor: "aptTime" },
+	              "Time"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-sm-4" },
+	              React.createElement("input", { type: "time", className: "form-control",
+	                id: "aptTime", ref: "inputAptTime" })
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "label",
+	              { className: "col-sm-2 control-label", htmlFor: "aptNotes" },
+	              "Apt. Notes"
+	            ),
+	            React.createElement(
+	              "div",
+	              { className: "col-sm-10" },
+	              React.createElement("textarea", { className: "form-control", rows: "4", cols: "50",
+	                id: "aptNotes", ref: "inputAptNotes", placeholder: "Appointment Notes" })
+	            )
+	          ),
+	          React.createElement(
+	            "div",
+	            { className: "form-group" },
+	            React.createElement(
+	              "div",
+	              { className: "col-sm-offset-2 col-sm-10" },
+	              React.createElement(
+	                "button",
+	                { type: "submit", className: "btn btn-primary pull-right" },
+	                "Add Appointment"
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	}
+
+	module.exports = AddAppointment;
 
 /***/ })
 /******/ ]);

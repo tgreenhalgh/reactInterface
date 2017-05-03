@@ -3,6 +3,7 @@ var React = require('react');
 class AptList extends React.Component {
   constructor(props) {
     super(props);
+    // React auto creates a blank state in each component
     // this.state = { };
 
     this.handleDelete = this.handleDelete.bind(this);
