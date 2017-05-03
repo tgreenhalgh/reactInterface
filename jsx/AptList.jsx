@@ -25,7 +25,7 @@ class AptList extends React.Component {
         </div>
         <div className="pet-info media-body">
           <div className="pet-head">
-            <span className="pet-name">{ this.props.singleItem.petname }</span>
+            <span className="pet-name">{ this.props.singleItem.petName }</span>
             <span className="apt-date pull-right">{ this.props.singleItem.aptDate }</span>
           </div>
           <div className="owner-name">

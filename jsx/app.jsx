@@ -4,6 +4,7 @@ const _ = require('lodash');
 
 const AptList = require('./AptList.jsx');
 const AddAppointment = require('./AddAppointment.jsx');
+const SearchAppointments = require('./SearchAppointments.jsx');
 
 class MainInterface extends React.Component {
   constructor(props) {
@@ -13,12 +14,15 @@ class MainInterface extends React.Component {
     this.state = {
       myAppointments: [ ],
       aptBodyVisible: false,
+      orderBy: 'petName',
+      orderDir: 'asc',
       url: "http://localhost:3000/jsx/data.json"
     };
 
     this.deleteMessage = this.deleteMessage.bind(this);
     this.toggleAddForm = this.toggleAddForm.bind(this);
     this.addItem = this.addItem.bind(this);
+    this.reOrder = this.reOrder.bind(this);
   }
 
   loadDataFromServer() {
@@ -63,9 +67,23 @@ class MainInterface extends React.Component {
     this.setState({ myAppointments: tempApts });
   }
 
+  reOrder(orderBy, orderDir) {
+    this.setState({
+      orderBy: orderBy,
+      orderDir: orderDir
+    });
+  }
+
   render() {
     // this is what we do when a state change happens
     var filteredApts = this.state.myAppointments;
+    var orderBy = this.state.orderBy;
+    var orderDir = this.state.orderDir;
+
+    filteredApts = _.orderBy(filteredApts, (item) => {
+      return item[orderBy].toLowerCase();
+    }, orderDir);
+
     filteredApts = filteredApts.map( (item, index) => {
       // sending props
       return (
@@ -85,12 +103,17 @@ class MainInterface extends React.Component {
           handleToggle = { this.toggleAddForm }
           addApt = { this.addItem }
         />
+        <SearchAppointments
+          orderBy = { this.state.orderBy }
+          orderDir = { this.state.orderDir }
+          onReOrder = { this.reOrder }
+        />
         <ul className="item-list media-list"> { filteredApts } </ul>
       </div>
     );
   }
 }
 
-ReactDOM.render( < MainInterface / > ,
+ReactDOM.render( <MainInterface / > ,
   document.getElementById('app')
 );

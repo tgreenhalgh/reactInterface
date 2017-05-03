@@ -50,6 +50,7 @@
 
 	const AptList = __webpack_require__(184);
 	const AddAppointment = __webpack_require__(185);
+	const SearchAppointments = __webpack_require__(186);
 
 	class MainInterface extends React.Component {
 	  constructor(props) {
@@ -59,12 +60,15 @@
 	    this.state = {
 	      myAppointments: [],
 	      aptBodyVisible: false,
+	      orderBy: 'petName',
+	      orderDir: 'asc',
 	      url: "http://localhost:3000/jsx/data.json"
 	    };
 
 	    this.deleteMessage = this.deleteMessage.bind(this);
 	    this.toggleAddForm = this.toggleAddForm.bind(this);
 	    this.addItem = this.addItem.bind(this);
+	    this.reOrder = this.reOrder.bind(this);
 	  }
 
 	  loadDataFromServer() {
@@ -109,9 +113,23 @@
 	    this.setState({ myAppointments: tempApts });
 	  }
 
+	  reOrder(orderBy, orderDir) {
+	    this.setState({
+	      orderBy: orderBy,
+	      orderDir: orderDir
+	    });
+	  }
+
 	  render() {
 	    // this is what we do when a state change happens
 	    var filteredApts = this.state.myAppointments;
+	    var orderBy = this.state.orderBy;
+	    var orderDir = this.state.orderDir;
+
+	    filteredApts = _.orderBy(filteredApts, item => {
+	      return item[orderBy].toLowerCase();
+	    }, orderDir);
+
 	    filteredApts = filteredApts.map((item, index) => {
 	      // sending props
 	      return React.createElement(AptList, {
@@ -129,6 +147,11 @@
 	        bodyVisible: this.state.aptBodyVisible,
 	        handleToggle: this.toggleAddForm,
 	        addApt: this.addItem
+	      }),
+	      React.createElement(SearchAppointments, {
+	        orderBy: this.state.orderBy,
+	        orderDir: this.state.orderDir,
+	        onReOrder: this.reOrder
 	      }),
 	      React.createElement(
 	        'ul',
@@ -39024,7 +39047,7 @@
 	          React.createElement(
 	            "span",
 	            { className: "pet-name" },
-	            this.props.singleItem.petname
+	            this.props.singleItem.petName
 	          ),
 	          React.createElement(
 	            "span",
@@ -39194,6 +39217,113 @@
 	}
 
 	module.exports = AddAppointment;
+
+/***/ }),
+/* 186 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	const React = __webpack_require__(1);
+
+	class SearchAppointments extends React.Component {
+	  constructor(props) {
+	    super(props);
+
+	    this.handleSort = this.handleSort.bind(this);
+	    this.handleOrder = this.handleOrder.bind(this);
+	  }
+
+	  handleSort(e) {
+	    this.props.onReOrder(e.target.id, this.props.orderDir);
+	  }
+
+	  handleOrder(e) {
+	    this.props.onReOrder(this.props.orderBy, e.target.id);
+	  }
+
+	  render() {
+	    return React.createElement(
+	      "div",
+	      { className: "row search-appointments" },
+	      React.createElement(
+	        "div",
+	        { className: "col-sm-offset-3 col-sm-6" },
+	        React.createElement(
+	          "div",
+	          { className: "input-group" },
+	          React.createElement("input", { id: "SearchApts", placeholder: "Search", type: "text", className: "form-control", "aria-label": "Search Appointments" }),
+	          React.createElement(
+	            "div",
+	            { className: "input-group-btn" },
+	            React.createElement(
+	              "button",
+	              { type: "button", className: "btn btn-primary dropdown-toggle",
+	                "data-toggle": "dropdown", "aria-haspopup": "true", "aria-expanded": "false" },
+	              "Sort by: ",
+	              React.createElement("span", { className: "caret" })
+	            ),
+	            React.createElement(
+	              "ul",
+	              { className: "dropdown-menu dropdown-menu-right" },
+	              React.createElement(
+	                "li",
+	                null,
+	                React.createElement(
+	                  "a",
+	                  { href: "#", id: "petName", onClick: this.handleSort },
+	                  "Pet Name ",
+	                  this.props.orderBy === 'petName' ? React.createElement("span", { className: "glyphicon glyphicon-ok" }) : null
+	                )
+	              ),
+	              React.createElement(
+	                "li",
+	                null,
+	                React.createElement(
+	                  "a",
+	                  { href: "#", id: "aptDate", onClick: this.handleSort },
+	                  "Date ",
+	                  this.props.orderBy === 'aptDate' ? React.createElement("span", { className: "glyphicon glyphicon-ok" }) : null
+	                )
+	              ),
+	              React.createElement(
+	                "li",
+	                null,
+	                React.createElement(
+	                  "a",
+	                  { href: "#", id: "ownerName", onClick: this.handleSort },
+	                  "Owner ",
+	                  this.props.orderBy === 'ownerName' ? React.createElement("span", { className: "glyphicon glyphicon-ok" }) : null
+	                )
+	              ),
+	              React.createElement("li", { role: "separator", className: "divider" }),
+	              React.createElement(
+	                "li",
+	                null,
+	                React.createElement(
+	                  "a",
+	                  { href: "#", id: "asc", onClick: this.handleOrder },
+	                  "Asc ",
+	                  this.props.orderDir === 'asc' ? React.createElement("span", { className: "glyphicon glyphicon-ok" }) : null
+	                )
+	              ),
+	              React.createElement(
+	                "li",
+	                null,
+	                React.createElement(
+	                  "a",
+	                  { href: "#", id: "desc", onClick: this.handleOrder },
+	                  "Desc  ",
+	                  this.props.orderDir === 'desc' ? React.createElement("span", { className: "glyphicon glyphicon-ok" }) : null
+	                )
+	              )
+	            )
+	          )
+	        )
+	      )
+	    );
+	  }
+	}
+
+	module.exports = SearchAppointments;
 
 /***/ })
 /******/ ]);
