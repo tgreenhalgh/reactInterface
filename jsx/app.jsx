@@ -18,6 +18,7 @@ class MainInterface extends React.Component {
 
     this.deleteMessage = this.deleteMessage.bind(this);
     this.toggleAddForm = this.toggleAddForm.bind(this);
+    this.addItem = this.addItem.bind(this);
   }
 
   loadDataFromServer() {
@@ -56,6 +57,12 @@ class MainInterface extends React.Component {
     this.setState( { aptBodyVisible: toggle });
   }
 
+  addItem(tempItem) {
+    var tempApts = this.state.myAppointments;
+    tempApts.push(tempItem);
+    this.setState({ myAppointments: tempApts });
+  }
+
   render() {
     // this is what we do when a state change happens
     var filteredApts = this.state.myAppointments;
@@ -76,6 +83,7 @@ class MainInterface extends React.Component {
         <AddAppointment
           bodyVisible = { this.state.aptBodyVisible }
           handleToggle = { this.toggleAddForm }
+          addApt = { this.addItem }
         />
         <ul className="item-list media-list"> { filteredApts } </ul>
       </div>

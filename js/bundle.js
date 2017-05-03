@@ -64,6 +64,7 @@
 
 	    this.deleteMessage = this.deleteMessage.bind(this);
 	    this.toggleAddForm = this.toggleAddForm.bind(this);
+	    this.addItem = this.addItem.bind(this);
 	  }
 
 	  loadDataFromServer() {
@@ -102,6 +103,12 @@
 	    this.setState({ aptBodyVisible: toggle });
 	  }
 
+	  addItem(tempItem) {
+	    var tempApts = this.state.myAppointments;
+	    tempApts.push(tempItem);
+	    this.setState({ myAppointments: tempApts });
+	  }
+
 	  render() {
 	    // this is what we do when a state change happens
 	    var filteredApts = this.state.myAppointments;
@@ -120,7 +127,8 @@
 	      { className: 'interface' },
 	      React.createElement(AddAppointment, {
 	        bodyVisible: this.state.aptBodyVisible,
-	        handleToggle: this.toggleAddForm
+	        handleToggle: this.toggleAddForm,
+	        addApt: this.addItem
 	      }),
 	      React.createElement(
 	        'ul',
@@ -39057,10 +39065,22 @@
 	    super(props);
 
 	    this.toggleAptDisplay = this.toggleAptDisplay.bind(this);
+	    this.handleAdd = this.handleAdd.bind(this);
 	  }
 
 	  toggleAptDisplay() {
 	    this.props.handleToggle();
+	  }
+
+	  handleAdd(e) {
+	    var tempItem = {
+	      petName: this.refs.inputPetName.value,
+	      ownerName: this.refs.inputOwnerName.value,
+	      aptDate: this.refs.inputAptDate.value + ' ' + this.refs.inputAptTime.value,
+	      aptNotes: this.refs.inputAptNotes.value
+	    };
+	    e.preventDefault();
+	    this.props.addApt(tempItem);
 	  }
 
 	  render() {
@@ -39082,7 +39102,7 @@
 	        { className: 'panel-body', style: displayAptBody },
 	        React.createElement(
 	          'form',
-	          { className: 'add-appointment form-horizontal' },
+	          { className: 'add-appointment form-horizontal', onSubmit: this.handleAdd },
 	          React.createElement(
 	            'div',
 	            { className: 'form-group' },
