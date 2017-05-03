@@ -12,9 +12,12 @@ class MainInterface extends React.Component {
     // 'react' to the changes and re-render that part
     this.state = {
       myAppointments: [ ],
+      aptBodyVisible: false,
       url: "http://localhost:3000/jsx/data.json"
     };
+
     this.deleteMessage = this.deleteMessage.bind(this);
+    this.toggleAddForm = this.toggleAddForm.bind(this);
   }
 
   loadDataFromServer() {
@@ -30,23 +33,28 @@ class MainInterface extends React.Component {
     });
   }
 
-    // componentDidMount : invoked after the component exists and before rendering
-    // good place for loading data, ajax, etc (be careful of 'this')
-    componentDidMount() {
-      this.loadDataFromServer();
-    }
+  // componentDidMount : invoked after the component exists and before rendering
+  // good place for loading data, ajax, etc (be careful of 'this')
+  componentDidMount() {
+    this.loadDataFromServer();
+  }
 
-    // componentWillUnmount : used to cancel outstanding requests, etc
-    componentWillUnmount() {
-      this.serverRequest.abort();
-    }
+  // componentWillUnmount : used to cancel outstanding requests, etc
+  componentWillUnmount() {
+    this.serverRequest.abort();
+  }
 
-    deleteMessage(item) {
-      var allApts = this.state.myAppointments;
-      var newApts = _.without(allApts, item);
-      // when state is changed, React automatically re-renders
-      this.setState( { myAppointments: newApts });
-    }
+  deleteMessage(item) {
+    var allApts = this.state.myAppointments;
+    var newApts = _.without(allApts, item);
+    // when state is changed, React automatically re-renders
+    this.setState( { myAppointments: newApts });
+  }
+
+  toggleAddForm() {
+    var toggle = !(this.state.aptBodyVisible);
+    this.setState( { aptBodyVisible: toggle });
+  }
 
   render() {
     // this is what we do when a state change happens
@@ -58,13 +66,17 @@ class MainInterface extends React.Component {
           key = { index }
           singleItem = { item }
           whichItem = { item }
-          onDelete = { this.deleteMessage } />
-        );
+          onDelete = { this.deleteMessage }
+        />
+      );
     });
 
     return (
       <div className="interface" >
-        <AddAppointment/>
+        <AddAppointment
+          bodyVisible = { this.state.aptBodyVisible }
+          handleToggle = { this.toggleAddForm }
+        />
         <ul className="item-list media-list"> { filteredApts } </ul>
       </div>
     );

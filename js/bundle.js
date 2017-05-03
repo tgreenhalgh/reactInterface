@@ -58,9 +58,12 @@
 	    // 'react' to the changes and re-render that part
 	    this.state = {
 	      myAppointments: [],
+	      aptBodyVisible: false,
 	      url: "http://localhost:3000/jsx/data.json"
 	    };
+
 	    this.deleteMessage = this.deleteMessage.bind(this);
+	    this.toggleAddForm = this.toggleAddForm.bind(this);
 	  }
 
 	  loadDataFromServer() {
@@ -94,6 +97,11 @@
 	    this.setState({ myAppointments: newApts });
 	  }
 
+	  toggleAddForm() {
+	    var toggle = !this.state.aptBodyVisible;
+	    this.setState({ aptBodyVisible: toggle });
+	  }
+
 	  render() {
 	    // this is what we do when a state change happens
 	    var filteredApts = this.state.myAppointments;
@@ -103,13 +111,17 @@
 	        key: index,
 	        singleItem: item,
 	        whichItem: item,
-	        onDelete: this.deleteMessage });
+	        onDelete: this.deleteMessage
+	      });
 	    });
 
 	    return React.createElement(
 	      'div',
 	      { className: 'interface' },
-	      React.createElement(AddAppointment, null),
+	      React.createElement(AddAppointment, {
+	        bodyVisible: this.state.aptBodyVisible,
+	        handleToggle: this.toggleAddForm
+	      }),
 	      React.createElement(
 	        'ul',
 	        { className: 'item-list media-list' },
@@ -39043,105 +39055,115 @@
 	class AddAppointment extends React.Component {
 	  constructor(props) {
 	    super(props);
+
+	    this.toggleAptDisplay = this.toggleAptDisplay.bind(this);
+	  }
+
+	  toggleAptDisplay() {
+	    this.props.handleToggle();
 	  }
 
 	  render() {
+	    var displayAptBody = {
+	      display: this.props.bodyVisible ? 'block' : 'none'
+	    };
+
 	    return React.createElement(
-	      "div",
-	      { className: "panel panel-primary" },
+	      'div',
+	      { className: 'panel panel-primary' },
 	      React.createElement(
-	        "div",
-	        { className: "panel-heading apt-addheading" },
-	        React.createElement("span", { className: "glyphicon glyphicon-plus" }),
-	        " Add Appointment"
+	        'div',
+	        { className: 'panel-heading apt-addheading', onClick: this.toggleAptDisplay },
+	        React.createElement('span', { className: 'glyphicon glyphicon-plus' }),
+	        ' Add Appointment'
 	      ),
 	      React.createElement(
-	        "div",
-	        { className: "panel-body" },
+	        'div',
+	        { className: 'panel-body', style: displayAptBody },
 	        React.createElement(
-	          "form",
-	          { className: "add-appointment form-horizontal" },
+	          'form',
+	          { className: 'add-appointment form-horizontal' },
 	          React.createElement(
-	            "div",
-	            { className: "form-group" },
+	            'div',
+	            { className: 'form-group' },
 	            React.createElement(
-	              "label",
-	              { className: "col-sm-2 control-label", htmlFor: "petName" },
-	              "Pet Name"
+	              'label',
+	              { className: 'col-sm-2 control-label', htmlFor: 'petName' },
+	              'Pet Name'
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-sm-10" },
-	              React.createElement("input", { type: "text", className: "form-control",
-	                id: "petName", ref: "inputPetName", placeholder: "Pet's Name" })
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement('input', { type: 'text', className: 'form-control',
+	                id: 'petName', ref: 'inputPetName', placeholder: 'Pet\'s Name' })
 	            )
 	          ),
 	          React.createElement(
-	            "div",
-	            { className: "form-group" },
+	            'div',
+	            { className: 'form-group' },
 	            React.createElement(
-	              "label",
-	              { className: "col-sm-2 control-label", htmlFor: "petOwner" },
-	              "Pet Owner"
+	              'label',
+	              { className: 'col-sm-2 control-label', htmlFor: 'petOwner' },
+	              'Pet Owner'
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-sm-10" },
-	              React.createElement("input", { type: "text", className: "form-control",
-	                id: "petOwner", ref: "inputOwnerName", placeholder: "Owner's Name" })
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement('input', { type: 'text', className: 'form-control',
+	                id: 'petOwner', ref: 'inputOwnerName', placeholder: 'Owner\'s Name' })
 	            )
 	          ),
 	          React.createElement(
-	            "div",
-	            { className: "form-group" },
+	            'div',
+	            { className: 'form-group' },
 	            React.createElement(
-	              "label",
-	              { className: "col-sm-2 control-label", htmlFor: "aptDate" },
-	              "Date"
+	              'label',
+	              { className: 'col-sm-2 control-label', htmlFor: 'aptDate' },
+	              'Date'
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-sm-4" },
-	              React.createElement("input", { type: "date", className: "form-control",
-	                id: "aptDate", ref: "inputAptDate" })
+	              'div',
+	              { className: 'col-sm-4' },
+	              React.createElement('input', { type: 'date', className: 'form-control',
+	                id: 'aptDate', ref: 'inputAptDate' })
 	            ),
 	            React.createElement(
-	              "label",
-	              { className: "col-sm-2 control-label", htmlFor: "aptTime" },
-	              "Time"
+	              'label',
+	              { className: 'col-sm-2 control-label', htmlFor: 'aptTime' },
+	              'Time'
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-sm-4" },
-	              React.createElement("input", { type: "time", className: "form-control",
-	                id: "aptTime", ref: "inputAptTime" })
+	              'div',
+	              { className: 'col-sm-4' },
+	              React.createElement('input', { type: 'time', className: 'form-control',
+	                id: 'aptTime', ref: 'inputAptTime' })
 	            )
 	          ),
 	          React.createElement(
-	            "div",
-	            { className: "form-group" },
+	            'div',
+	            { className: 'form-group' },
 	            React.createElement(
-	              "label",
-	              { className: "col-sm-2 control-label", htmlFor: "aptNotes" },
-	              "Apt. Notes"
+	              'label',
+	              { className: 'col-sm-2 control-label', htmlFor: 'aptNotes' },
+	              'Apt. Notes'
 	            ),
 	            React.createElement(
-	              "div",
-	              { className: "col-sm-10" },
-	              React.createElement("textarea", { className: "form-control", rows: "4", cols: "50",
-	                id: "aptNotes", ref: "inputAptNotes", placeholder: "Appointment Notes" })
+	              'div',
+	              { className: 'col-sm-10' },
+	              React.createElement('textarea', { className: 'form-control', rows: '4', cols: '50',
+	                id: 'aptNotes', ref: 'inputAptNotes', placeholder: 'Appointment Notes' })
 	            )
 	          ),
 	          React.createElement(
-	            "div",
-	            { className: "form-group" },
+	            'div',
+	            { className: 'form-group' },
 	            React.createElement(
-	              "div",
-	              { className: "col-sm-offset-2 col-sm-10" },
+	              'div',
+	              { className: 'col-sm-offset-2 col-sm-10' },
 	              React.createElement(
-	                "button",
-	                { type: "submit", className: "btn btn-primary pull-right" },
-	                "Add Appointment"
+	                'button',
+	                { type: 'submit', className: 'btn btn-primary pull-right' },
+	                'Add Appointment'
 	              )
 	            )
 	          )

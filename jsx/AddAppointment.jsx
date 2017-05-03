@@ -3,14 +3,24 @@ const React = require('react');
 class AddAppointment extends React.Component {
   constructor(props) {
     super(props);
+
+    this.toggleAptDisplay = this.toggleAptDisplay.bind(this);
+  }
+
+  toggleAptDisplay() {
+    this.props.handleToggle();
   }
 
   render() {
+    var displayAptBody = {
+      display: this.props.bodyVisible ? 'block' : 'none'
+    }
+
     return (
       <div className="panel panel-primary">
-        <div className="panel-heading apt-addheading">
+        <div className="panel-heading apt-addheading" onClick={ this.toggleAptDisplay }>
         <span className="glyphicon glyphicon-plus"></span> Add Appointment</div>
-        <div className="panel-body">
+        <div className="panel-body" style={ displayAptBody }>
           <form className="add-appointment form-horizontal">
             <div className="form-group">
               <label className="col-sm-2 control-label" htmlFor="petName">Pet Name</label>
